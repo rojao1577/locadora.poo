@@ -1,168 +1,191 @@
-# 🚗 LocaFácil
+#  LocaFácil
 
-Sistema de gerenciamento de locação de veículos desenvolvido como projeto acadêmico. O objetivo é oferecer uma solução para cadastro de clientes, funcionários, veículos, categorias, locações e pagamentos, permitindo o controle completo do processo de aluguel de automóveis.
+Sistema de gerenciamento de locação de veículos desenvolvido como projeto da disciplina de **Programação Orientada a Objetos** da **Universidade Federal do Agreste de Pernambuco (UFAPE)**.
 
-## 📋 Funcionalidades
+##  Informações Acadêmicas
 
-* Cadastro de clientes
-* Cadastro de funcionários
-* Cadastro de veículos
-* Gerenciamento de categorias de veículos
-* Registro de locações
-* Controle de disponibilidade dos veículos
-* Registro de pagamentos
-* Cálculo de diária
-* Cálculo de multas por atraso
-* Finalização de locações
-* Verificação de inadimplência de clientes
+* **Universidade:** Universidade Federal do Agreste de Pernambuco (UFAPE)
+* **Curso:** Ciência da Computação
+* **Disciplina:** Programação Orientada a Objetos
+* **Professor:** Igor Medeiros Vanderlei
+* **Período:** II
+* **Turno:** Noite
 
-## 🏗️ Estrutura do Projeto
-
-O sistema foi modelado utilizando Programação Orientada a Objetos (POO), contendo as seguintes classes principais:
-
-### Pessoa (Classe Abstrata)
-
-Classe base responsável pelas informações comuns de clientes e funcionários.
-
-**Atributos**
-
-* id
-* nome
-* cpf
-* telefone
-* endereço
-
-**Método**
-
-* validarCpf()
-
----
-
-### Cliente
-
-Herda de **Pessoa**.
-
-**Atributos**
-
-* email
-* scoreCredito
-
-**Métodos**
-
-* cadastrar()
-* verificarInadimplencia()
-
----
-
-### Funcionário
-
-Herda de **Pessoa**.
-
-**Atributos**
-
-* cargo
-* salário
-* data de contratação
-
----
-
-### Veículo
-
-Representa os automóveis disponíveis para locação.
-
-**Atributos**
-
-* placa
-* modelo
-* marca
-* ano de fabricação
-* status
-
-**Método**
-
-* verificarDisponibilidade()
-
----
-
-### Categoria
-
-Define a categoria dos veículos e o valor base da diária.
-
-**Métodos**
-
-* calcularValorDiaria()
-
----
-
-### Locação
-
-Representa uma locação realizada por um cliente.
-
-**Atributos**
-
-* data da locação
-* data prevista para devolução
-* data real da devolução
-* valor total
-
-**Métodos**
-
-* registrar()
-* calcularMulta()
-* finalizarLocacao()
-
----
-
-### ItemLocacao
-
-Armazena os veículos envolvidos na locação e o valor da diária aplicada.
-
----
-
-### Pagamento
-
-Representa o pagamento referente à locação.
-
-**Atributos**
-
-* valor
-* data do pagamento
-* forma de pagamento
-
----
-
-### StatusVeiculo
-
-Enumeração responsável pelo estado do veículo.
-
-* DISPONIVEL
-* ALUGADO
-* MANUTENCAO
-
-## 🔗 Relacionamentos
-
-* Um cliente pode realizar diversas locações.
-* Um funcionário pode atender diversas locações.
-* Uma locação pode conter um ou mais itens.
-* Cada veículo pertence a uma categoria.
-* Cada pagamento está vinculado a uma locação.
-* Cada veículo possui um status que indica sua disponibilidade.
-
-## 💻 Tecnologias
-
-* Java
-* Programação Orientada a Objetos
-* UML
-* Git
-* GitHub
-
-## 👥 Equipe
+##  Equipe
 
 * João Gabriel
 * João Vitor
 * José Erasmo Barros
 * Lucas Fraga
 
-## 📄 Diagrama de Classes
+---
 
-O projeto foi modelado utilizando UML para representar as entidades do sistema, seus atributos, métodos e relacionamentos, servindo como base para a implementação da aplicação.
+#  Sobre o Projeto
+
+O **LocaFácil** é uma aplicação cliente-servidor desenvolvida para gerenciar o processo de locação de veículos, permitindo o cadastro de clientes, funcionários, veículos e categorias, além do controle de locações, pagamentos e disponibilidade dos automóveis.
+
+O projeto foi desenvolvido seguindo os princípios da Programação Orientada a Objetos e a arquitetura proposta pela disciplina.
+
+---
+
+#  Arquitetura
+
+## Back-end
+
+* Java
+* Spring Boot
+* Spring Data JPA
+* PostgreSQL (ou MySQL)
+* API REST
+* JSON
+
+Arquitetura em camadas:
+
+```
+Controller (REST)
+
+↓
+
+Fachada
+
+↓
+
+Service
+
+↓
+
+Repository (JPA)
+
+↓
+
+Model
+```
+
+## Front-end
+
+Tecnologia escolhida pela equipe:
+
+* React.js *(ou Vue.js / Flutter / React Native, conforme a implementação)*
+
+---
+
+#  Modelo de Domínio
+
+O sistema é composto pelas seguintes entidades:
+
+* Pessoa (abstrata)
+* Cliente
+* Funcionário
+* Veículo
+* Categoria
+* Locação
+* ItemLocação
+* Pagamento
+* StatusVeiculo (Enum)
+
+O modelo utiliza:
+
+* Herança
+* Encapsulamento
+* Associação entre classes
+* Enumerações
+* Polimorfismo
+
+---
+
+#  Funcionalidades
+
+* Cadastro de clientes
+* Cadastro de funcionários
+* Cadastro de veículos
+* Cadastro de categorias
+* Registro de locações
+* Controle de disponibilidade
+* Registro de pagamentos
+* Cálculo de diárias
+* Cálculo de multas
+* Finalização de locações
+* Verificação de inadimplência
+
+---
+
+#  Tecnologias
+
+### Back-end
+
+* Java 21
+* Spring Boot
+* Spring Data JPA
+* Maven
+* PostgreSQL
+
+### Front-end
+
+* React.js
+
+### Ferramentas
+
+* Git
+* GitHub
+* Postman
+* IntelliJ IDEA
+* VS Code
+
+---
+
+#  Testes
+
+O projeto contempla:
+
+* Testes Unitários
+* Testes de Integração
+* Testes de API
+* Testes de Interface
+
+---
+
+#  Organização do Projeto
+
+```
+src
+├── controller
+├── fachada
+├── service
+├── repository
+├── model
+├── dto
+├── exception
+├── config
+└── tests
+```
+
+---
+
+#  Requisitos Atendidos
+
+* ✔ Herança
+* ✔ Polimorfismo
+* ✔ Encapsulamento
+* ✔ Associação entre classes
+* ✔ Interfaces entre camadas
+* ✔ Arquitetura Cliente-Servidor
+* ✔ Comunicação JSON
+* ✔ Git e GitHub
+* ✔ Documentação
+* ✔ Organização em pacotes
+
+---
+
+#  Diagrama de Classes
+
+O modelo de domínio foi elaborado utilizando UML, contemplando as principais entidades do sistema e seus relacionamentos.
+
+---
+
+# 🚀 Possíveis Melhorias
+
+* Autenticação JWT
+* Upload de documentos
+* Geração de relatórios em PDF
+* Internacionalização
+* Integração com mapas
