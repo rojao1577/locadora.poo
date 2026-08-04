@@ -1,91 +1,130 @@
 package br.edu.ufape.poo.locadora.negocio.basica;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import java.util.Objects;
+
+@Entity
+@Table(name = "veiculo")
 public class Veiculo {
 
-	private Long id;
-	private String placa;
-	private String modelo;
-	private String marca;
-	private int anoFabricacao;
-	private StatusVeiculo status;
-	private Categoria categoria;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	
-	public Veiculo() {
-		super();
-	}
+    @Column(nullable = false, unique = true, length = 10)
+    private String placa;
 
-	
-	public Veiculo(final Long id, final String placa, final String modelo, final String marca, final int anoFabricacao, final StatusVeiculo status,
-			final Categoria categoria) {
-		super();
-		this.id = id;
-		this.placa = placa;
-		this.modelo = modelo;
-		this.marca = marca;
-		this.anoFabricacao = anoFabricacao;
-		this.status = status;
-		this.categoria = categoria;
-	}
+    @Column(nullable = false, length = 100)
+    private String modelo;
 
-	public boolean verificarDisponibilidade() {
-		return this.status == StatusVeiculo.DISPONIVEL;
-	}
+    @Column(nullable = false, length = 100)
+    private String marca;
 
-	public Long getId() {
-		return id;
-	}
+    @Column(name = "ano_fabricacao", nullable = false)
+    private int anoFabricacao;
 
-	public void setId(final Long id) {
-		this.id = id;
-	}
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private StatusVeiculo status;
 
-	public String getPlaca() {
-		return placa;
-	}
+    @ManyToOne
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private Categoria categoria;
 
-	public void setPlaca(final String placa) {
-		this.placa = placa;
-	}
+    public Veiculo() {
+        super();
+    }
 
-	public String getModelo() {
-		return modelo;
-	}
+    public Veiculo(final String placa, final String modelo, final String marca, final int anoFabricacao,
+            final StatusVeiculo status, final Categoria categoria) {
+        super();
+        this.placa = placa;
+        this.modelo = modelo;
+        this.marca = marca;
+        this.anoFabricacao = anoFabricacao;
+        this.status = status;
+        this.categoria = categoria;
+    }
 
-	public void setModelo(final String modelo) {
-		this.modelo = modelo;
-	}
+    public boolean verificarDisponibilidade() {
+        return this.status == StatusVeiculo.DISPONIVEL;
+    }
 
-	public String getMarca() {
-		return marca;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setMarca(final String marca) {
-		this.marca = marca;
-	}
+    public void setId(final Long id) {
+        this.id = id;
+    }
 
-	public int getAnoFabricacao() {
-		return anoFabricacao;
-	}
+    public String getPlaca() {
+        return placa;
+    }
 
-	public void setAnoFabricacao(final int anoFabricacao) {
-		this.anoFabricacao = anoFabricacao;
-	}
+    public void setPlaca(final String placa) {
+        this.placa = placa;
+    }
 
-	public StatusVeiculo getStatus() {
-		return status;
-	}
+    public String getModelo() {
+        return modelo;
+    }
 
-	public void setStatus(final StatusVeiculo status) {
-		this.status = status;
-	}
+    public void setModelo(final String modelo) {
+        this.modelo = modelo;
+    }
 
-	public Categoria getCategoria() {
-		return categoria;
-	}
+    public String getMarca() {
+        return marca;
+    }
 
-	public void setCategoria(final Categoria categoria) {
-		this.categoria = categoria;
-	}
+    public void setMarca(final String marca) {
+        this.marca = marca;
+    }
 
+    public int getAnoFabricacao() {
+        return anoFabricacao;
+    }
+
+    public void setAnoFabricacao(final int anoFabricacao) {
+        this.anoFabricacao = anoFabricacao;
+    }
+
+    public StatusVeiculo getStatus() {
+        return status;
+    }
+
+    public void setStatus(final StatusVeiculo status) {
+        this.status = status;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(final Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Veiculo)) return false;
+        final Veiculo veiculo = (Veiculo) o;
+        return Objects.equals(placa, veiculo.placa);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(placa);
+    }
 }
