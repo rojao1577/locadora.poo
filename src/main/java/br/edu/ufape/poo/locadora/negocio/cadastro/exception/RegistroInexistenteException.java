@@ -1,4 +1,4 @@
-package br.edu.ufape.poo.locadora.negocio.cadastro;
+package br.edu.ufape.poo.locadora.negocio.cadastro.exception;
 
 public class RegistroInexistenteException extends Exception {
 	

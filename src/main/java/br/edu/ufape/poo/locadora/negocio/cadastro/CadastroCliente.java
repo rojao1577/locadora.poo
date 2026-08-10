@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.poo.locadora.dados.ClienteRepository;
 import br.edu.ufape.poo.locadora.negocio.basica.Cliente;
+import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroDuplicadoException;
+import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroInexistenteException;
 
 @Service
 public class CadastroCliente implements InterfaceCadastroCliente {

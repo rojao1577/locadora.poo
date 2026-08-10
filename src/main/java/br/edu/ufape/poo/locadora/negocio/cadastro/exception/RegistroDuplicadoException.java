@@ -1,4 +1,4 @@
-package br.edu.ufape.poo.locadora.negocio.cadastro;
+package br.edu.ufape.poo.locadora.negocio.cadastro.exception;
 
 public class RegistroDuplicadoException extends Exception {
 	 private static final long serialVersionUID = 1L;
