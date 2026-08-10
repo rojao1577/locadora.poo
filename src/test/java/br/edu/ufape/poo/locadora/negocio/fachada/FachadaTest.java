@@ -23,10 +23,17 @@ import br.edu.ufape.poo.locadora.negocio.basica.Categoria;
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCategoria;
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroVeiculo;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaPossuiVeiculosException;
+import br.edu.ufape.poo.locadora.negocio.basica.Cliente;
+import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCliente;
+import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroDuplicadoException;
+import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroInexistenteException;
 
 @ExtendWith(MockitoExtension.class)
 class FachadaTest {
 
+	@Mock
+	private CadastroCliente cadastroCliente;
+	
     @Mock
     private CadastroCategoria cadastroCategoria;
 
@@ -108,5 +115,58 @@ class FachadaTest {
             VeiculoNaoEncontradoException.class,
             () -> fachada.escolherVeiculoDisponivelPorCategoria(1L)
         );
+    }
+    @Test
+    void deveSalvarClienteComSucesso() throws RegistroDuplicadoException {
+
+        Cliente cliente = new Cliente("João", "111.111.111-11", "81999999999",
+            "Rua X", "joao@email.com", 600);
+
+        when(cadastroCliente.salvarCliente(cliente))
+            .thenReturn(cliente);
+
+        Cliente salvo = fachada.salvarCliente(cliente);
+
+        assertEquals("João", salvo.getNome());
+        verify(cadastroCliente).salvarCliente(cliente);
+    }
+
+    @Test
+    void deveLancarExcecaoAoSalvarClienteComCpfDuplicado() throws RegistroDuplicadoException {
+
+        Cliente cliente = new Cliente("Maria", "222.222.222-22", "81988887777",
+            "Rua Y", "maria@email.com", 500);
+
+        when(cadastroCliente.salvarCliente(cliente))
+            .thenThrow(new RegistroDuplicadoException("CPF já cadastrado."));
+
+        assertThrows(RegistroDuplicadoException.class, () -> {
+            fachada.salvarCliente(cliente);
+        });
+    }
+
+    @Test
+    void deveProcurarClientePorCpfComSucesso() throws RegistroInexistenteException {
+
+        Cliente cliente = new Cliente("Pedro", "333.333.333-33", "81977776666",
+            "Rua Z", "pedro@email.com", 700);
+
+        when(cadastroCliente.procurarClientePorCpf("333.333.333-33"))
+            .thenReturn(cliente);
+
+        Cliente encontrado = fachada.procurarClientePorCpf("333.333.333-33");
+
+        assertEquals("Pedro", encontrado.getNome());
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoClienteNaoExiste() throws RegistroInexistenteException {
+
+        when(cadastroCliente.procurarClientePorCpf("000.000.000-00"))
+            .thenThrow(new RegistroInexistenteException("Cliente não encontrado."));
+
+        assertThrows(RegistroInexistenteException.class, () -> {
+            fachada.procurarClientePorCpf("000.000.000-00");
+        });
     }
 }
