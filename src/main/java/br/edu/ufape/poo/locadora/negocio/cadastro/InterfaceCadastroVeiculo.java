@@ -17,4 +17,6 @@ public interface InterfaceCadastroVeiculo {
     void removerVeiculo(Long id);
 
     boolean existeVeiculoNaCategoria(Categoria categoria);
+    
+    List<Veiculo> listarVeiculosDisponiveisPorCategoria(Categoria categoria);
 }

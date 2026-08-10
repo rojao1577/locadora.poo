@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.poo.locadora.dados.VeiculoRepository;
+import br.edu.ufape.poo.locadora.negocio.basica.StatusVeiculo;
 import br.edu.ufape.poo.locadora.negocio.basica.Categoria;
 import br.edu.ufape.poo.locadora.negocio.basica.Veiculo;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaVeiculoObrigatoriaException;
@@ -75,5 +76,10 @@ public class CadastroVeiculo implements InterfaceCadastroVeiculo {
     @Override
     public boolean existeVeiculoNaCategoria(Categoria categoria) {
         return repositorioVeiculo.existsByCategoria(categoria);
+    }
+    
+    @Override
+    public List<Veiculo> listarVeiculosDisponiveisPorCategoria(Categoria categoria) {
+        return repositorioVeiculo.findByCategoriaAndStatus(categoria, StatusVeiculo.DISPONIVEL);
     }
 }
