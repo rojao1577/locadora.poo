@@ -56,7 +56,7 @@ public class CadastroPagamentoTest {
     public void deveLancarExcecaoFormaPagamentoVazia() {
         Pagamento p = new Pagamento();
         p.setValor(new BigDecimal("50.00"));
-        p.setFormaPagamento(""); // Forma vazia
+        p.setFormaPagamento("");
         p.setDataPagamento(LocalDate.now());
         p.setLocacao(new Locacao());
 
@@ -69,7 +69,7 @@ public class CadastroPagamentoTest {
         p.setValor(new BigDecimal("50.00"));
         p.setFormaPagamento("Dinheiro");
         p.setDataPagamento(LocalDate.now());
-        p.setLocacao(null); // Locacao nula
+        p.setLocacao(null);
 
         assertThrows(LocacaoPagamentoObrigatoriaException.class, () -> cadastroPagamento.cadastrarPagamento(p));
     }
