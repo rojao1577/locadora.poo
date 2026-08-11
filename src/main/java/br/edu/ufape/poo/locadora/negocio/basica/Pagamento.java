@@ -68,7 +68,15 @@ public class Pagamento {
     public void setFormaPagamento(String formaPagamento) {
         this.formaPagamento = formaPagamento;
     }
-    
+
+    public Locacao getLocacao() {
+        return locacao;
+    }
+
+    public void setLocacao(Locacao locacao) {
+        this.locacao = locacao;
+    }
+
     @Override
     public boolean equals(Object o) {
     	if (this == o) return true;
