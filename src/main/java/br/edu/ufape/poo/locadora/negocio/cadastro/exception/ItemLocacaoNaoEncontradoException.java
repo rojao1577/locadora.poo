@@ -1,9 +1,9 @@
 package br.edu.ufape.poo.locadora.negocio.cadastro.exception;
 
-public class ValorDiariaInvalidoException extends RuntimeException {
+public class ItemLocacaoNaoEncontradoException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public ValorDiariaInvalidoException(String message) {
+    public ItemLocacaoNaoEncontradoException(String message) {
         super(message);
     }
 }

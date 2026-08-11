@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import br.edu.ufape.poo.locadora.negocio.cadastro.exception.ValorDiariaInvalidoException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -18,7 +19,6 @@ import br.edu.ufape.poo.locadora.negocio.basica.Categoria;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaJaExisteException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaNaoEncontradaException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.NomeCategoriaInvalidoException;
-import br.edu.ufape.poo.locadora.negocio.cadastro.exception.ValorDiariaInvalidoException;
 
 @ExtendWith(MockitoExtension.class)
 class CadastroCategoriaTest {

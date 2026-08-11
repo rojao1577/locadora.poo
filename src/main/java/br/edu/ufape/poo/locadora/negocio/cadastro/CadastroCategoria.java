@@ -14,6 +14,7 @@ import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaNaoEncontra
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.NomeCategoriaInvalidoException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.ValorDiariaInvalidoException;
 
+
 @Service
 public class CadastroCategoria implements InterfaceCadastroCategoria {
 

@@ -6,12 +6,23 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+// Nossos Imports Básicos
 import br.edu.ufape.poo.locadora.negocio.basica.Categoria;
 import br.edu.ufape.poo.locadora.negocio.basica.Cliente;
+import br.edu.ufape.poo.locadora.negocio.basica.Funcionario;
+import br.edu.ufape.poo.locadora.negocio.basica.Pagamento;
 import br.edu.ufape.poo.locadora.negocio.basica.Veiculo;
+import br.edu.ufape.poo.locadora.negocio.basica.ItemLocacao;
+
+// Nossos Imports de Cadastro
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCategoria;
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCliente;
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroVeiculo;
+import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroFuncionario;
+import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroPagamento;
+import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroItemLocacao;
+
+// Nossos Imports de Exceções
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaNaoEncontradaException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaPossuiVeiculosException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CpfInvalidoException;
@@ -27,11 +38,20 @@ public class Fachada {
 
     @Autowired
     private CadastroVeiculo cadastroVeiculo;
-    
+
     @Autowired
     private CadastroCliente cadastroCliente;
 
-    // CATEGORIA
+    @Autowired
+    private InterfaceCadastroFuncionario cadastroFuncionario;
+
+    @Autowired
+    private InterfaceCadastroPagamento cadastroPagamento;
+
+    @Autowired
+    private InterfaceCadastroItemLocacao cadastroItemLocacao;
+
+    // ==================== CATEGORIA ====================
 
     public Categoria cadastrarCategoria(Categoria categoria) {
         return cadastroCategoria.cadastrarCategoria(categoria);
@@ -44,24 +64,16 @@ public class Fachada {
     public Optional<Categoria> buscarCategoriaPorId(Long id) {
         return cadastroCategoria.buscarCategoriaPorId(id);
     }
-    
+
     public void removerCategoria(Long id) {
-
-        Optional<Categoria> categoria =
-            cadastroCategoria.buscarCategoriaPorId(id);
-
-        if (categoria.isPresent() &&
-            cadastroVeiculo.existeVeiculoNaCategoria(categoria.get())) {
-
-            throw new CategoriaPossuiVeiculosException(
-                "Não é possível remover uma categoria que possui veículos."
-            );
+        Optional<Categoria> categoria = cadastroCategoria.buscarCategoriaPorId(id);
+        if (categoria.isPresent() && cadastroVeiculo.existeVeiculoNaCategoria(categoria.get())) {
+            throw new CategoriaPossuiVeiculosException("Não é possível remover uma categoria que possui veículos.");
         }
-
         cadastroCategoria.removerCategoria(id);
     }
 
-    // VEICULO
+    // ==================== VEICULO ====================
 
     public Veiculo cadastrarVeiculo(Veiculo veiculo) {
         return cadastroVeiculo.cadastrarVeiculo(veiculo);
@@ -78,20 +90,21 @@ public class Fachada {
     public void removerVeiculo(Long id) {
         cadastroVeiculo.removerVeiculo(id);
     }
-    
+
     public Veiculo escolherVeiculoDisponivelPorCategoria(Long categoriaId) {
-    	Categoria categoria = cadastroCategoria.buscarCategoriaPorId(categoriaId).orElseThrow(() -> new CategoriaNaoEncontradaException("Categoria nao encontrada."));
-    	
-    	List<Veiculo> disponiveis = cadastroVeiculo.listarVeiculosDisponiveisPorCategoria(categoria);
-    	
-    	if(disponiveis.isEmpty()) {
-    		throw new VeiculoNaoEncontradoException("Nao ha veiculos disponiveis nessa categoria no momento.");
-    	}
-    	
-    	return disponiveis.get(0);
+        Categoria categoria = cadastroCategoria.buscarCategoriaPorId(categoriaId)
+                .orElseThrow(() -> new CategoriaNaoEncontradaException("Categoria nao encontrada."));
+
+        List<Veiculo> disponiveis = cadastroVeiculo.listarVeiculosDisponiveisPorCategoria(categoria);
+
+        if(disponiveis.isEmpty()) {
+            throw new VeiculoNaoEncontradoException("Nao ha veiculos disponiveis nessa categoria no momento.");
+        }
+        return disponiveis.get(0);
     }
-    
-    //CLIENTE
+
+    // ==================== CLIENTE ====================
+
     public Cliente salvarCliente(Cliente cliente) throws RegistroDuplicadoException, CpfInvalidoException {
         return cadastroCliente.salvarCliente(cliente);
     }
@@ -114,5 +127,59 @@ public class Fachada {
 
     public void apagarCliente(Cliente entity) {
         cadastroCliente.apagarCliente(entity);
+    }
+
+    // ==================== FUNCIONARIO ====================
+
+    public Funcionario cadastrarFuncionario(Funcionario funcionario) {
+        return cadastroFuncionario.cadastrarFuncionario(funcionario);
+    }
+
+    public List<Funcionario> listarFuncionarios() {
+        return cadastroFuncionario.listarFuncionarios();
+    }
+
+    public Funcionario buscarFuncionarioPorId(Long id) {
+        return cadastroFuncionario.buscarFuncionarioPorId(id);
+    }
+
+    public void removerFuncionario(Long id) {
+        cadastroFuncionario.removerFuncionario(id);
+    }
+
+    // ==================== PAGAMENTO ====================
+
+    public Pagamento cadastrarPagamento(Pagamento pagamento) {
+        return cadastroPagamento.cadastrarPagamento(pagamento);
+    }
+
+    public List<Pagamento> listarPagamentos() {
+        return cadastroPagamento.listarPagamentos();
+    }
+
+    public Pagamento buscarPagamentoPorId(Long id) {
+        return cadastroPagamento.buscarPagamentoPorId(id);
+    }
+
+    public void removerPagamento(Long id) {
+        cadastroPagamento.removerPagamento(id);
+    }
+
+    // ==================== ITEM LOCACAO ====================
+
+    public ItemLocacao cadastrarItemLocacao(ItemLocacao itemLocacao) {
+        return cadastroItemLocacao.cadastrarItemLocacao(itemLocacao);
+    }
+
+    public List<ItemLocacao> listarItensLocacao() {
+        return cadastroItemLocacao.listarItensLocacao();
+    }
+
+    public ItemLocacao buscarItemLocacaoPorId(Long id) {
+        return cadastroItemLocacao.buscarItemLocacaoPorId(id);
+    }
+
+    public void removerItemLocacao(Long id) {
+        cadastroItemLocacao.removerItemLocacao(id);
     }
 }
