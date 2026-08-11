@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.poo.locadora.dados.ClienteRepository;
 import br.edu.ufape.poo.locadora.negocio.basica.Cliente;
+import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CpfInvalidoException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroDuplicadoException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroInexistenteException;
 
@@ -17,8 +18,13 @@ public class CadastroCliente implements InterfaceCadastroCliente {
     private ClienteRepository repositorioCliente;
 
     @Override
-    public Cliente salvarCliente(Cliente novo) throws RegistroDuplicadoException {
-        if (repositorioCliente.findByCpf(novo.getCpf()) == null) {
+    public Cliente salvarCliente(Cliente novo) throws RegistroDuplicadoException, CpfInvalidoException {
+        
+    	if(!novo.validarCpf()) {
+    		throw new CpfInvalidoException ("O CPF informado eh invalido.");
+    	}
+    	
+    	if (repositorioCliente.findByCpf(novo.getCpf()) == null) {
             return repositorioCliente.save(novo);
         } else {
             throw new RegistroDuplicadoException(
@@ -27,8 +33,13 @@ public class CadastroCliente implements InterfaceCadastroCliente {
     }
 
     @Override
-    public Cliente atualizarCliente(Cliente novo) throws RegistroDuplicadoException {
-        Cliente existente = repositorioCliente.findByCpf(novo.getCpf());
+    public Cliente atualizarCliente(Cliente novo) throws RegistroDuplicadoException, CpfInvalidoException{
+        
+    	if(!novo.validarCpf()) {
+    		throw new CpfInvalidoException ("O CPF informado eh invalido.");
+    	}
+    	
+    	Cliente existente = repositorioCliente.findByCpf(novo.getCpf());
         if (existente == null || existente.getId().equals(novo.getId())) {
             return repositorioCliente.save(novo);
         } else {

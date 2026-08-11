@@ -14,6 +14,7 @@ import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCliente;
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroVeiculo;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaNaoEncontradaException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaPossuiVeiculosException;
+import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CpfInvalidoException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroDuplicadoException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroInexistenteException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.VeiculoNaoEncontradoException;
@@ -91,11 +92,11 @@ public class Fachada {
     }
     
     //CLIENTE
-    public Cliente salvarCliente(Cliente cliente) throws RegistroDuplicadoException {
+    public Cliente salvarCliente(Cliente cliente) throws RegistroDuplicadoException, CpfInvalidoException {
         return cadastroCliente.salvarCliente(cliente);
     }
 
-    public Cliente atualizarCliente(Cliente cliente) throws RegistroDuplicadoException {
+    public Cliente atualizarCliente(Cliente cliente) throws RegistroDuplicadoException, CpfInvalidoException {
         return cadastroCliente.atualizarCliente(cliente);
     }
 
