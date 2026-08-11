@@ -23,6 +23,7 @@ import br.edu.ufape.poo.locadora.negocio.basica.Categoria;
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCategoria;
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroVeiculo;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaPossuiVeiculosException;
+import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CpfInvalidoException;
 import br.edu.ufape.poo.locadora.negocio.basica.Cliente;
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCliente;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroDuplicadoException;
@@ -117,7 +118,7 @@ class FachadaTest {
         );
     }
     @Test
-    void deveSalvarClienteComSucesso() throws RegistroDuplicadoException {
+    void deveSalvarClienteComSucesso() throws RegistroDuplicadoException, CpfInvalidoException {
 
         Cliente cliente = new Cliente("João", "111.111.111-11", "81999999999",
             "Rua X", "joao@email.com", 600);
@@ -132,7 +133,7 @@ class FachadaTest {
     }
 
     @Test
-    void deveLancarExcecaoAoSalvarClienteComCpfDuplicado() throws RegistroDuplicadoException {
+    void deveLancarExcecaoAoSalvarClienteComCpfDuplicado() throws RegistroDuplicadoException, CpfInvalidoException {
 
         Cliente cliente = new Cliente("Maria", "222.222.222-22", "81988887777",
             "Rua Y", "maria@email.com", 500);
