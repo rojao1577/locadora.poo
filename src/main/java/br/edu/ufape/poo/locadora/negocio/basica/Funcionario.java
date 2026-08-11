@@ -27,7 +27,7 @@ public class Funcionario extends Pessoa{
 		if (getCpf() == null) {
 			return false;
 		}
-		String cpfLimpo = getCpf().replaceAll("[^0-9}", "");
+		String cpfLimpo = getCpf().replaceAll("[^0-9]", "");
 		return cpfLimpo.length() == 11;
 	}
 	
