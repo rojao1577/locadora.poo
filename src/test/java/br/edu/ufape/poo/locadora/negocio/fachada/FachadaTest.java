@@ -1,173 +1,168 @@
 package br.edu.ufape.poo.locadora.negocio.fachada;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-
-import br.edu.ufape.poo.locadora.negocio.basica.StatusVeiculo;
-import br.edu.ufape.poo.locadora.negocio.basica.Veiculo;
-import br.edu.ufape.poo.locadora.negocio.cadastro.exception.VeiculoNaoEncontradoException;
 import br.edu.ufape.poo.locadora.negocio.basica.Categoria;
+import br.edu.ufape.poo.locadora.negocio.basica.Cliente;
+import br.edu.ufape.poo.locadora.negocio.basica.Funcionario;
+import br.edu.ufape.poo.locadora.negocio.basica.Pagamento;
+import br.edu.ufape.poo.locadora.negocio.basica.Veiculo;
+
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCategoria;
+import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCliente;
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroVeiculo;
+import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroFuncionario;
+import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroPagamento;
+
+import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaNaoEncontradaException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaPossuiVeiculosException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CpfInvalidoException;
-import br.edu.ufape.poo.locadora.negocio.basica.Cliente;
-import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCliente;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroDuplicadoException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroInexistenteException;
+import br.edu.ufape.poo.locadora.negocio.cadastro.exception.VeiculoNaoEncontradoException;
 
-@ExtendWith(MockitoExtension.class)
-class FachadaTest {
+@Service
+public class FachadaTest {
 
-	@Mock
-	private CadastroCliente cadastroCliente;
-	
-    @Mock
+    @Autowired
     private CadastroCategoria cadastroCategoria;
 
-    @Mock
+    @Autowired
     private CadastroVeiculo cadastroVeiculo;
 
-    @InjectMocks
-    private Fachada fachada;
+    @Autowired
+    private CadastroCliente cadastroCliente;
 
-    @Test
-    void deveRecusarRemocaoDeCategoriaQuePossuiVeiculos() {
+    @Autowired
+    private InterfaceCadastroFuncionario cadastroFuncionario;
 
-        Categoria categoria = new Categoria(
-            "Hatch",
-            new BigDecimal("100")
-        );
+    @Autowired
+    private InterfaceCadastroPagamento cadastroPagamento;
 
-        when(cadastroCategoria.buscarCategoriaPorId(1L))
-            .thenReturn(Optional.of(categoria));
+    // CATEGORIA
 
-        when(cadastroVeiculo.existeVeiculoNaCategoria(categoria))
-            .thenReturn(true);
-
-        assertThrows(
-            CategoriaPossuiVeiculosException.class,
-            () -> fachada.removerCategoria(1L)
-        );
-    }
-    
-    @Test
-    void deveRemoverCategoriaSemVeiculos() {
-
-        Categoria categoria = new Categoria(
-            "Hatch",
-            new BigDecimal("100")
-        );
-
-        when(cadastroCategoria.buscarCategoriaPorId(1L))
-            .thenReturn(Optional.of(categoria));
-
-        when(cadastroVeiculo.existeVeiculoNaCategoria(categoria))
-            .thenReturn(false);
-
-        fachada.removerCategoria(1L);
-
-        verify(cadastroCategoria).removerCategoria(1L);
-    }
-    
-    @Test
-    void deveEscolherVeiculoDisponivelQuandoExisteNaCategoria() {
-
-        Categoria categoria = new Categoria("Hatch", new BigDecimal("100"));
-        Veiculo veiculo = new Veiculo("TST0001", "Modelo Teste", "Marca Teste", 2024,
-            StatusVeiculo.DISPONIVEL, categoria);
-
-        when(cadastroCategoria.buscarCategoriaPorId(1L))
-            .thenReturn(Optional.of(categoria));
-
-        when(cadastroVeiculo.listarVeiculosDisponiveisPorCategoria(categoria))
-            .thenReturn(List.of(veiculo));
-
-        Veiculo escolhido = fachada.escolherVeiculoDisponivelPorCategoria(1L);
-
-        assertEquals("TST0001", escolhido.getPlaca());
+    public Categoria cadastrarCategoria(Categoria categoria) {
+        return cadastroCategoria.cadastrarCategoria(categoria);
     }
 
-    @Test
-    void deveLancarExcecaoQuandoNaoHaVeiculoDisponivelNaCategoria() {
-
-        Categoria categoria = new Categoria("Hatch", new BigDecimal("100"));
-
-        when(cadastroCategoria.buscarCategoriaPorId(1L))
-            .thenReturn(Optional.of(categoria));
-
-        when(cadastroVeiculo.listarVeiculosDisponiveisPorCategoria(categoria))
-            .thenReturn(List.of());
-
-        assertThrows(
-            VeiculoNaoEncontradoException.class,
-            () -> fachada.escolherVeiculoDisponivelPorCategoria(1L)
-        );
-    }
-    @Test
-    void deveSalvarClienteComSucesso() throws RegistroDuplicadoException, CpfInvalidoException {
-
-        Cliente cliente = new Cliente("João", "111.111.111-11", "81999999999",
-            "Rua X", "joao@email.com", 600);
-
-        when(cadastroCliente.salvarCliente(cliente))
-            .thenReturn(cliente);
-
-        Cliente salvo = fachada.salvarCliente(cliente);
-
-        assertEquals("João", salvo.getNome());
-        verify(cadastroCliente).salvarCliente(cliente);
+    public List<Categoria> listarCategorias() {
+        return cadastroCategoria.listarCategorias();
     }
 
-    @Test
-    void deveLancarExcecaoAoSalvarClienteComCpfDuplicado() throws RegistroDuplicadoException, CpfInvalidoException {
-
-        Cliente cliente = new Cliente("Maria", "222.222.222-22", "81988887777",
-            "Rua Y", "maria@email.com", 500);
-
-        when(cadastroCliente.salvarCliente(cliente))
-            .thenThrow(new RegistroDuplicadoException("CPF já cadastrado."));
-
-        assertThrows(RegistroDuplicadoException.class, () -> {
-            fachada.salvarCliente(cliente);
-        });
+    public Optional<Categoria> buscarCategoriaPorId(Long id) {
+        return cadastroCategoria.buscarCategoriaPorId(id);
     }
 
-    @Test
-    void deveProcurarClientePorCpfComSucesso() throws RegistroInexistenteException {
+    public void removerCategoria(Long id) {
 
-        Cliente cliente = new Cliente("Pedro", "333.333.333-33", "81977776666",
-            "Rua Z", "pedro@email.com", 700);
+        Optional<Categoria> categoria =
+                cadastroCategoria.buscarCategoriaPorId(id);
 
-        when(cadastroCliente.procurarClientePorCpf("333.333.333-33"))
-            .thenReturn(cliente);
+        if (categoria.isPresent() &&
+                cadastroVeiculo.existeVeiculoNaCategoria(categoria.get())) {
 
-        Cliente encontrado = fachada.procurarClientePorCpf("333.333.333-33");
+            throw new CategoriaPossuiVeiculosException(
+                    "Não é possível remover uma categoria que possui veículos."
+            );
+        }
 
-        assertEquals("Pedro", encontrado.getNome());
+        cadastroCategoria.removerCategoria(id);
     }
 
-    @Test
-    void deveLancarExcecaoQuandoClienteNaoExiste() throws RegistroInexistenteException {
+    // VEICULO
 
-        when(cadastroCliente.procurarClientePorCpf("000.000.000-00"))
-            .thenThrow(new RegistroInexistenteException("Cliente não encontrado."));
+    public Veiculo cadastrarVeiculo(Veiculo veiculo) {
+        return cadastroVeiculo.cadastrarVeiculo(veiculo);
+    }
 
-        assertThrows(RegistroInexistenteException.class, () -> {
-            fachada.procurarClientePorCpf("000.000.000-00");
-        });
+    public List<Veiculo> listarVeiculos() {
+        return cadastroVeiculo.listarVeiculos();
+    }
+
+    public Optional<Veiculo> buscarVeiculoPorId(Long id) {
+        return cadastroVeiculo.buscarVeiculoPorId(id);
+    }
+
+    public void removerVeiculo(Long id) {
+        cadastroVeiculo.removerVeiculo(id);
+    }
+
+    public Veiculo escolherVeiculoDisponivelPorCategoria(Long categoriaId) {
+        Categoria categoria = cadastroCategoria.buscarCategoriaPorId(categoriaId)
+                .orElseThrow(() -> new CategoriaNaoEncontradaException("Categoria nao encontrada."));
+
+        List<Veiculo> disponiveis = cadastroVeiculo.listarVeiculosDisponiveisPorCategoria(categoria);
+
+        if(disponiveis.isEmpty()) {
+            throw new VeiculoNaoEncontradoException("Nao ha veiculos disponiveis nessa categoria no momento.");
+        }
+
+        return disponiveis.get(0);
+    }
+
+    // CLIENTE
+
+    public Cliente salvarCliente(Cliente cliente) throws RegistroDuplicadoException, CpfInvalidoException {
+        return cadastroCliente.salvarCliente(cliente);
+    }
+
+    public Cliente atualizarCliente(Cliente cliente) throws RegistroDuplicadoException, CpfInvalidoException {
+        return cadastroCliente.atualizarCliente(cliente);
+    }
+
+    public List<Cliente> listarTodosClientes() {
+        return cadastroCliente.listarTodosClientes();
+    }
+
+    public Cliente procurarClientePorCpf(String cpf) throws RegistroInexistenteException {
+        return cadastroCliente.procurarClientePorCpf(cpf);
+    }
+
+    public Cliente carregarCliente(Long id) throws RegistroInexistenteException {
+        return cadastroCliente.carregarCliente(id);
+    }
+
+    public void apagarCliente(Cliente entity) {
+        cadastroCliente.apagarCliente(entity);
+    }
+
+    // FUNCIONARIO
+
+    public Funcionario cadastrarFuncionario(Funcionario funcionario) {
+        return cadastroFuncionario.cadastrarFuncionario(funcionario);
+    }
+
+    public List<Funcionario> listarFuncionarios() {
+        return cadastroFuncionario.listarFuncionarios();
+    }
+
+    public Funcionario buscarFuncionarioPorId(Long id) {
+        return cadastroFuncionario.buscarFuncionarioPorId(id);
+    }
+
+    public void removerFuncionario(Long id) {
+        cadastroFuncionario.removerFuncionario(id);
+    }
+
+    // PAGAMENTO
+
+    public Pagamento cadastrarPagamento(Pagamento pagamento) {
+        return cadastroPagamento.cadastrarPagamento(pagamento);
+    }
+
+    public List<Pagamento> listarPagamentos() {
+        return cadastroPagamento.listarPagamentos();
+    }
+
+    public Pagamento buscarPagamentoPorId(Long id) {
+        return cadastroPagamento.buscarPagamentoPorId(id);
+    }
+
+    public void removerPagamento(Long id) {
+        cadastroPagamento.removerPagamento(id);
     }
 }
