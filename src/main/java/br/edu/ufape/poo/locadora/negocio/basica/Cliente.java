@@ -41,5 +41,8 @@ public class Cliente extends Pessoa{
 	public void setScoreCredito(int scoreCredito) {
 		this.scoreCredito = scoreCredito;
 	}
+	public void setEmail(String email) {
+	    this.email = email;
+	}
 }
  
