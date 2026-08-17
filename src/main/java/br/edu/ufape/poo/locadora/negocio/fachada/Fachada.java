@@ -75,7 +75,15 @@ public class Fachada {
 
     // ==================== VEICULO ====================
 
-    public Veiculo cadastrarVeiculo(Veiculo veiculo) {
+    public Veiculo cadastrarVeiculo(Veiculo veiculo, Long idCategoria) {
+
+        Categoria categoria = cadastroCategoria.buscarCategoriaPorId(idCategoria)
+            .orElseThrow(() -> new CategoriaNaoEncontradaException(
+                "Categoria não encontrada."
+            ));
+
+        veiculo.setCategoria(categoria);
+
         return cadastroVeiculo.cadastrarVeiculo(veiculo);
     }
 
