@@ -1,5 +1,7 @@
 package br.edu.ufape.poo.locadora.negocio.fachada;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +15,7 @@ import br.edu.ufape.poo.locadora.negocio.basica.Funcionario;
 import br.edu.ufape.poo.locadora.negocio.basica.Pagamento;
 import br.edu.ufape.poo.locadora.negocio.basica.Veiculo;
 import br.edu.ufape.poo.locadora.negocio.basica.ItemLocacao;
+import br.edu.ufape.poo.locadora.negocio.basica.Locacao;
 
 // Nossos Imports de Cadastro
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCategoria;
@@ -26,11 +29,13 @@ import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroLocacao;
 // Nossos Imports de Exceções
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaNaoEncontradaException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaPossuiVeiculosException;
+import br.edu.ufape.poo.locadora.negocio.cadastro.exception.ClienteInadimplenteException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CpfInvalidoException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroDuplicadoException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroInexistenteException;
+import br.edu.ufape.poo.locadora.negocio.cadastro.exception.VeiculoIndisponivelException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.VeiculoNaoEncontradoException;
-import br.edu.ufape.poo.locadora.negocio.basica.Locacao;
+
 
 @Service
 public class Fachada {
@@ -52,7 +57,7 @@ public class Fachada {
 
     @Autowired
     private InterfaceCadastroItemLocacao cadastroItemLocacao;
-    
+
     @Autowired
     private InterfaceCadastroLocacao cadastroLocacao;
 
@@ -83,9 +88,9 @@ public class Fachada {
     public Veiculo cadastrarVeiculo(Veiculo veiculo, Long idCategoria) {
 
         Categoria categoria = cadastroCategoria.buscarCategoriaPorId(idCategoria)
-            .orElseThrow(() -> new CategoriaNaoEncontradaException(
-                "Categoria não encontrada."
-            ));
+                .orElseThrow(() -> new CategoriaNaoEncontradaException(
+                        "Categoria não encontrada."
+                ));
 
         veiculo.setCategoria(categoria);
 
@@ -148,7 +153,7 @@ public class Fachada {
         return cadastroFuncionario.cadastrarFuncionario(funcionario);
     }
 
-    public List<Funcionario> listarFuncionarios() {
+    public List<Funcionarios> listarFuncionarios() {
         return cadastroFuncionario.listarFuncionarios();
     }
 
@@ -195,11 +200,37 @@ public class Fachada {
     public void removerItemLocacao(Long id) {
         cadastroItemLocacao.removerItemLocacao(id);
     }
-    
+
     // ==================== LOCACAO ===================
-    
+
     public Locacao buscarLocacaoPorId(Long id) {
-    	return cadastroLocacao.buscarLocacao(id);
+        return cadastroLocacao.buscarLocacao(id);
+    }
+
+    public Locacao registrarLocacao(Locacao locacao, Long clienteId, Long funcionarioId, List<Long> veiculosIds) throws ClienteInadimplenteException, VeiculoIndisponivelException, RegistroInexistenteException {
+
+        Cliente cliente = cadastroCliente.carregarCliente(clienteId);
+        Funcionario funcionario = cadastroFuncionario.buscarFuncionarioPorId(funcionarioId);
+
+        locacao.setCliente(cliente);
+        locacao.setFuncionario(funcionario);
+
+        List<ItemLocacao> itens = new ArrayList<>();
+        for (Long veiculoId : veiculosIds) {
+            Veiculo veiculo = cadastroVeiculo.buscarVeiculoPorId(veiculoId)
+                    .orElseThrow(() -> new RuntimeException("Veículo com ID " + veiculoId + " não encontrado no sistema."));
+
+            ItemLocacao item = new ItemLocacao();
+            item.setVeiculo(veiculo);
+            item.setLocacao(locacao);
+            itens.add(item);
+        }
+        locacao.setItens(itens);
+
+        return cadastroLocacao.registrarLocacao(locacao);
+    }
+
+    public Locacao finalizarLocacao(Long idLocacao, LocalDate dataDevolucao) {
+        return cadastroLocacao.finalizarLocacao(idLocacao, dataDevolucao);
     }
 }
-
