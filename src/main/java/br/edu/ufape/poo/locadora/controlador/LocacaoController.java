@@ -1,9 +1,9 @@
-package br.edu.ufape.poo.locadora.comunicacao.controlador;
+package br.edu.ufape.poo.locadora.controlador;
 
 import br.edu.ufape.poo.locadora.comunicacao.conversor.LocacaoConversor;
 import br.edu.ufape.poo.locadora.comunicacao.requisicoes.LocacaoDTORequest;
 import br.edu.ufape.poo.locadora.comunicacao.resposta.LocacaoDTOResponse;
-import br.edu.ufape.poo.locadora.fachada.Fachada;
+import br.edu.ufape.poo.locadora.negocio.fachada.Fachada;
 import br.edu.ufape.poo.locadora.negocio.basica.Locacao;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.ClienteInadimplenteException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.VeiculoIndisponivelException;
@@ -40,6 +40,10 @@ public class LocacaoController {
 
         } catch (ClienteInadimplenteException | VeiculoIndisponivelException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+
+        } catch (br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroInexistenteException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

@@ -8,7 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-// Nossos Imports Básicos
+
 import br.edu.ufape.poo.locadora.negocio.basica.Categoria;
 import br.edu.ufape.poo.locadora.negocio.basica.Cliente;
 import br.edu.ufape.poo.locadora.negocio.basica.Funcionario;
@@ -17,7 +17,7 @@ import br.edu.ufape.poo.locadora.negocio.basica.Veiculo;
 import br.edu.ufape.poo.locadora.negocio.basica.ItemLocacao;
 import br.edu.ufape.poo.locadora.negocio.basica.Locacao;
 
-// Nossos Imports de Cadastro
+
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCategoria;
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCliente;
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroVeiculo;
@@ -26,7 +26,6 @@ import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroPagamento;
 import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroItemLocacao;
 import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroLocacao;
 
-// Nossos Imports de Exceções
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaNaoEncontradaException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaPossuiVeiculosException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.ClienteInadimplenteException;
@@ -83,7 +82,6 @@ public class Fachada {
         cadastroCategoria.removerCategoria(id);
     }
 
-    // ==================== VEICULO ====================
 
     public Veiculo cadastrarVeiculo(Veiculo veiculo, Long idCategoria) {
 
@@ -153,8 +151,8 @@ public class Fachada {
         return cadastroFuncionario.cadastrarFuncionario(funcionario);
     }
 
-    public List<Funcionarios> listarFuncionarios() {
-        return cadastroFuncionario.listarFuncionarios();
+    public Funcionario listarFuncionarios () {
+        return (Funcionario) cadastroFuncionario.listarFuncionarios();
     }
 
     public Funcionario buscarFuncionarioPorId(Long id) {
@@ -165,7 +163,6 @@ public class Fachada {
         cadastroFuncionario.removerFuncionario(id);
     }
 
-    // ==================== PAGAMENTO ====================
 
     public Pagamento cadastrarPagamento(Pagamento pagamento) {
         return cadastroPagamento.cadastrarPagamento(pagamento);
@@ -183,7 +180,6 @@ public class Fachada {
         cadastroPagamento.removerPagamento(id);
     }
 
-    // ==================== ITEM LOCACAO ====================
 
     public ItemLocacao cadastrarItemLocacao(ItemLocacao itemLocacao) {
         return cadastroItemLocacao.cadastrarItemLocacao(itemLocacao);
