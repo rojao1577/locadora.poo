@@ -21,6 +21,7 @@ import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroVeiculo;
 import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroFuncionario;
 import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroPagamento;
 import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroItemLocacao;
+import br.edu.ufape.poo.locadora.negocio.cadastro.InterfaceCadastroLocacao;
 
 // Nossos Imports de Exceções
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CategoriaNaoEncontradaException;
@@ -29,6 +30,7 @@ import br.edu.ufape.poo.locadora.negocio.cadastro.exception.CpfInvalidoException
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroDuplicadoException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroInexistenteException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.VeiculoNaoEncontradoException;
+import br.edu.ufape.poo.locadora.negocio.basica.Locacao;
 
 @Service
 public class Fachada {
@@ -50,6 +52,9 @@ public class Fachada {
 
     @Autowired
     private InterfaceCadastroItemLocacao cadastroItemLocacao;
+    
+    @Autowired
+    private InterfaceCadastroLocacao cadastroLocacao;
 
     // ==================== CATEGORIA ====================
 
@@ -190,4 +195,11 @@ public class Fachada {
     public void removerItemLocacao(Long id) {
         cadastroItemLocacao.removerItemLocacao(id);
     }
+    
+    // ==================== LOCACAO ===================
+    
+    public Locacao buscarLocacaoPorId(Long id) {
+    	return cadastroLocacao.buscarLocacao(id);
+    }
 }
+

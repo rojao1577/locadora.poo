@@ -13,7 +13,7 @@ public class ItemLocacao {
     @Column(nullable = false)
     private BigDecimal valorDiaria;
 
-    // === Aqui está o atributo que faltava! ===
+    
     @Column(nullable = false)
     private int dias;
 
@@ -50,4 +50,31 @@ public class ItemLocacao {
 
     public Veiculo getVeiculo() { return veiculo; }
     public void setVeiculo(Veiculo veiculo) { this.veiculo = veiculo; }
+    
+    @Override
+    public boolean equals(Object o) {
+    	if (this == o) {
+    		return true;
+    	}
+    	if (!(o instanceof ItemLocacao)) {
+    		return false;
+    	}
+    	ItemLocacao itemLocacao = (ItemLocacao) o;
+    	return id != null && id.equals(itemLocacao.id);
+    	
+    }
+    
+    @Override
+    public int hashCode() {
+    	return getClass().hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return "ItemLocacao{" +
+                "id=" + id +
+                ", valorDiaria=" + valorDiaria +
+                ", dias=" + dias +
+                '}';
+    }
 }
