@@ -1,17 +1,12 @@
 package br.edu.ufape.poo.locadora.controlador;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.edu.ufape.poo.locadora.comunicacao.requisicoes.FuncionarioDTORequest;
 import br.edu.ufape.poo.locadora.comunicacao.resposta.FuncionarioDTOResponse;
@@ -32,28 +27,27 @@ public class FuncionarioController {
     private FuncionarioConversor conversor;
 
     @GetMapping
-    public List<FuncionarioDTOResponse> listar() {
-        return ((List<Funcionario>) fachada.listarFuncionarios())
-                .stream()
-                .map(conversor::entityToResponse)
-                .toList();
+    public ResponseEntity<List<FuncionarioDTOResponse>> listar() {
+        List<FuncionarioDTOResponse> resposta = new ArrayList<>();
+
+        List<Funcionario> listaFuncionarios = fachada.listarFuncionarios();
+
+        for (Funcionario funcionario : listaFuncionarios) {
+            resposta.add(conversor.entityToResponse(funcionario));
+        }
+
+        return ResponseEntity.ok(resposta);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscar(@PathVariable Long id) {
         Funcionario funcionario = fachada.buscarFuncionarioPorId(id);
-
-        return ResponseEntity.ok(
-                conversor.entityToResponse(funcionario)
-        );
+        return ResponseEntity.ok(conversor.entityToResponse(funcionario));
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(
-            @Valid @RequestBody FuncionarioDTORequest dto
-    ) {
+    public ResponseEntity<?> cadastrar(@Valid @RequestBody FuncionarioDTORequest dto) {
         Funcionario funcionario = conversor.requestToEntity(dto);
-
         funcionario = fachada.cadastrarFuncionario(funcionario);
 
         return ResponseEntity
