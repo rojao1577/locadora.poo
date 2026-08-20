@@ -145,14 +145,13 @@ public class Fachada {
         cadastroCliente.apagarCliente(entity);
     }
 
-    // ==================== FUNCIONARIO ====================
 
     public Funcionario cadastrarFuncionario(Funcionario funcionario) {
         return cadastroFuncionario.cadastrarFuncionario(funcionario);
     }
 
-    public Funcionario listarFuncionarios () {
-        return (Funcionario) cadastroFuncionario.listarFuncionarios();
+    public List<Funcionario> listarFuncionarios() {
+        return cadastroFuncionario.listarFuncionarios();
     }
 
     public Funcionario buscarFuncionarioPorId(Long id) {

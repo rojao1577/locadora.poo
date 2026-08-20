@@ -12,10 +12,16 @@ public class FuncionarioConversor {
         Funcionario entity = new Funcionario();
         entity.setNome(dto.nome());
         entity.setCpf(dto.cpf());
+        entity.setTelefone(dto.telefone());
+        entity.setEndereco(dto.endereco());
+        entity.setCargo(dto.cargo());
+        entity.setDataContratacao(dto.dataContratacao());
+        entity.setSalario(dto.salario());
         return entity;
     }
 
     public FuncionarioDTOResponse entityToResponse(Funcionario entity) {
+
         return new FuncionarioDTOResponse(
                 entity.getId(),
                 entity.getNome(),
