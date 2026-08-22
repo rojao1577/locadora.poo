@@ -32,6 +32,9 @@ public class CadastroLocacao implements InterfaceCadastroLocacao {
                 }
                 item.getVeiculo().setStatus(StatusVeiculo.ALUGADO);
                 item.setLocacao(locacao);
+
+                // Correção aplicada aqui:
+                item.setValorDiaria(item.getVeiculo().getCategoria().getValorDiariaBase());
             }
         }
 
