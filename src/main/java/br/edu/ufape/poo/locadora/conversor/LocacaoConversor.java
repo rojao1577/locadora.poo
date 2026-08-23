@@ -1,4 +1,4 @@
-package br.edu.ufape.poo.locadora.comunicacao.conversor;
+package br.edu.ufape.poo.locadora.conversor;
 
 import br.edu.ufape.poo.locadora.comunicacao.requisicoes.LocacaoDTORequest;
 import br.edu.ufape.poo.locadora.comunicacao.resposta.LocacaoDTOResponse;

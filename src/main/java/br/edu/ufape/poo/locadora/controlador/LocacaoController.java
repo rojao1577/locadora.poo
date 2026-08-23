@@ -1,6 +1,6 @@
 package br.edu.ufape.poo.locadora.controlador;
 
-import br.edu.ufape.poo.locadora.comunicacao.conversor.LocacaoConversor;
+import br.edu.ufape.poo.locadora.conversor.LocacaoConversor;
 import br.edu.ufape.poo.locadora.comunicacao.requisicoes.LocacaoDTORequest;
 import br.edu.ufape.poo.locadora.comunicacao.resposta.LocacaoDTOResponse;
 import br.edu.ufape.poo.locadora.negocio.fachada.Fachada;
