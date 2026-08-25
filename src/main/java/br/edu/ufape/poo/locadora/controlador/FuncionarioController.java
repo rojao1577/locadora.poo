@@ -18,6 +18,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/funcionarios")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FuncionarioController {
 
     @Autowired

@@ -37,6 +37,18 @@ export default function RootLayout({ children }) {
             <Link href="/veiculos" className="hover:underline">
               Veículos
             </Link>
+
+            <Link href="/funcionarios" className="hover:underline">
+              Funcionarios
+            </Link>
+
+            <Link href="/pagamentos" className="hover:underline">
+              Pagamentos
+            </Link>
+
+
+
+
           </nav>
         </header>
 
