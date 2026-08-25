@@ -1,11 +1,13 @@
 import Link from "next/link";
 import BotaoExcluirVeiculo from "./BotaoExcluirVeiculo";
 
+const API_URL = process.env.BACKEND_URL || "http://localhost:8080";
+
 async function buscarVeiculos() {
-  const resposta = await fetch("http://localhost:8080/veiculos", {
+  const resposta = await fetch(`${API_URL}/veiculos`, {
     cache: "no-store",
   });
-
+  
   if (!resposta.ok) {
     throw new Error("Erro ao buscar veículos.");
   }
@@ -14,7 +16,7 @@ async function buscarVeiculos() {
 }
 
 async function buscarCategorias() {
-  const resposta = await fetch("http://localhost:8080/categorias", {
+  const resposta = await fetch(`${API_URL}/categorias`, {
     cache: "no-store",
   });
 

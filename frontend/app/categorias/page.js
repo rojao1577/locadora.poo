@@ -1,8 +1,10 @@
 import Link from "next/link";
 import BotaoExcluirCategoria from "./BotaoExcluirCategoria";
 
+const API_URL = process.env.BACKEND_URL || "http://localhost:8080";
+
 async function buscarCategorias() {
-  const resposta = await fetch("http://localhost:8080/categorias", {
+  const resposta = await fetch(`${API_URL}/categorias`, {
     cache: "no-store",
   });
 
