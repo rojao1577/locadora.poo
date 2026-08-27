@@ -202,6 +202,10 @@ public class Fachada {
         return cadastroLocacao.buscarLocacao(id);
     }
 
+    public List<Locacao> listarLocacoes() {
+        return cadastroLocacao.listarLocacoes();
+    }
+
     public Locacao registrarLocacao(Locacao locacao, Long clienteId, Long funcionarioId, List<Long> veiculosIds) throws ClienteInadimplenteException, VeiculoIndisponivelException, RegistroInexistenteException {
 
         Cliente cliente = cadastroCliente.carregarCliente(clienteId);

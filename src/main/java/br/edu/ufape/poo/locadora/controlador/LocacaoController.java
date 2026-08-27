@@ -14,8 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/locacoes")
 public class LocacaoController {
@@ -25,6 +28,15 @@ public class LocacaoController {
 
     @Autowired
     private LocacaoConversor conversor;
+
+    @GetMapping
+    public ResponseEntity<List<LocacaoDTOResponse>> listarLocacoes() {
+        List<Locacao> locacoes = fachada.listarLocacoes();
+        List<LocacaoDTOResponse> responseList = locacoes.stream()
+                .map(conversor::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responseList);
+    }
 
     @PostMapping
     public ResponseEntity<?> registrarLocacao(@Valid @RequestBody LocacaoDTORequest request) {

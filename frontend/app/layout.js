@@ -46,9 +46,9 @@ export default function RootLayout({ children }) {
               Pagamentos
             </Link>
 
-
-
-
+            <Link href="/locacoes" className="hover:underline">
+              Locações
+            </Link>
           </nav>
         </header>
 
