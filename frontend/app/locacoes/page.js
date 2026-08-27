@@ -39,7 +39,6 @@ export default function LocacoesPage() {
         }
     }
 
-    // Função para extrair o veículo de forma segura dependendo do formato do seu DTO
     const renderVeiculos = (locacao) => {
         if (locacao.itens && locacao.itens.length > 0) {
             return locacao.itens.map(i => i.veiculo?.modelo || `ID: ${i.veiculo?.id}`).join(', ');
