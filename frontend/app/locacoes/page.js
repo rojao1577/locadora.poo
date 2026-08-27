@@ -57,8 +57,8 @@ export default function LocacoesPage() {
         <main className="p-6 max-w-5xl mx-auto text-white">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">Listagem de Locações</h1>
-                <Link href="/locacoes/nova" className="bg-black text-white px-4 py-2 border border-gray-600 rounded hover:bg-gray-800 transition font-bold">
-                    + Nova Locação
+                <Link href="/locacoes/nova" className="bg-black text-white px-4 py-2 rounded">
+                    Nova Locação
                 </Link>
             </div>
 
