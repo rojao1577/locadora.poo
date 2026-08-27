@@ -24,7 +24,7 @@ import br.edu.ufape.poo.locadora.negocio.cadastro.exception.VeiculoNaoEncontrado
 import br.edu.ufape.poo.locadora.negocio.fachada.Fachada;
 
 import jakarta.validation.Valid;
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/veiculos")
 public class VeiculoController {

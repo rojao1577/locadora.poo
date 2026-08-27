@@ -17,6 +17,7 @@ import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroInexistenteE
 import br.edu.ufape.poo.locadora.negocio.fachada.Fachada;
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
