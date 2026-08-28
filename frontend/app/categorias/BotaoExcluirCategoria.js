@@ -32,7 +32,7 @@ export default function BotaoExcluirCategoria({ id }) {
   return (
     <button
       onClick={excluirCategoria}
-      className="bg-red-600 text-white px-3 py-1 rounded"
+      className="bg-red-600 text-white px-2 py-1 rounded"
     >
       Excluir
     </button>
