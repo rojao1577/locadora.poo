@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 export default function NovaCategoriaPage() {
   const router = useRouter();
@@ -26,11 +25,7 @@ export default function NovaCategoriaPage() {
     });
 
     if (resposta.ok) {
-      setMensagem("Categoria cadastrada com sucesso.");
-
-      setTimeout(() => {
-        router.push("/categorias");
-      }, 1000);
+      router.push("/categorias");
     } else {
       const erro = await resposta.text();
       setMensagem(erro || "Erro ao cadastrar categoria.");
@@ -38,75 +33,32 @@ export default function NovaCategoriaPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-100 p-8">
-      <div className="mx-auto max-w-xl">
-
-        <h1 className="text-3xl font-bold mb-6">
-          Nova Categoria
-        </h1>
-
-        <form
-          onSubmit={cadastrarCategoria}
-          className="bg-white p-6 rounded-lg shadow"
-        >
-          <div className="mb-5">
-            <label className="block mb-2 font-medium">
-              Nome
-            </label>
-
-            <input
-              type="text"
-              value={nome}
-              onChange={(event) => setNome(event.target.value)}
-              placeholder="Ex: Executivo"
-              className="w-full border border-gray-300 rounded p-3"
-              required
-            />
-          </div>
-
-          <div className="mb-6">
-            <label className="block mb-2 font-medium">
-              Valor da diária
-            </label>
-
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              value={valorDiariaBase}
-              onChange={(event) =>
-                setValorDiariaBase(event.target.value)
-              }
-              placeholder="Ex: 150.00"
-              className="w-full border border-gray-300 rounded p-3"
-              required
-            />
-          </div>
-
-          <div className="flex gap-3">
-            <button
-              type="submit"
-              className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
-            >
-              Cadastrar
-            </button>
-
-            <Link
-              href="/categorias"
-              className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
-            >
-              Cancelar
-            </Link>
-          </div>
-
-          {mensagem && (
-            <p className="mt-4 font-medium">
-              {mensagem}
-            </p>
-          )}
-
-        </form>
-      </div>
+    <main className="p-6 max-w-lg mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Nova Categoria</h1>
+      {mensagem && <p className="text-red-500 mb-4">{mensagem}</p>}
+      <form onSubmit={cadastrarCategoria} className="flex flex-col gap-3">
+        <input
+          className="border p-2 rounded"
+          type="text"
+          placeholder="Nome"
+          value={nome}
+          onChange={(event) => setNome(event.target.value)}
+          required
+        />
+        <input
+          className="border p-2 rounded"
+          type="number"
+          step="0.01"
+          min="0"
+          placeholder="Valor da diária"
+          value={valorDiariaBase}
+          onChange={(event) => setValorDiariaBase(event.target.value)}
+          required
+        />
+        <button type="submit" className="bg-black text-white p-2 rounded">
+          Cadastrar
+        </button>
+      </form>
     </main>
   );
 }

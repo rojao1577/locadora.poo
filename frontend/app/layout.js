@@ -51,6 +51,12 @@ export default function RootLayout({ children }) {
             <Link href="/locacoes" className="hover:text-brand-green transition-colors">
               Locações
             </Link>
+            <Link href="/clientes" className="hover:text-brand-green transition-colors">
+              Clientes
+            </Link>
+            <Link href="/itensLocacao" className="hover:text-brand-green transition-colors">
+              Itens de Locação
+            </Link>
           </nav>
         </div>
       </header>

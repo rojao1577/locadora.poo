@@ -2,12 +2,12 @@
 
 import { useRouter } from "next/navigation";
 
-export default function BotaoExcluirVeiculo({ id }) {
+export default function BotaoExcluirItemLocacao({ id }) {
   const router = useRouter();
 
-  async function excluirVeiculo() {
+  async function excluirItem() {
     const confirmar = window.confirm(
-      "Deseja realmente excluir este veículo?"
+      "Deseja realmente excluir este item de locação?"
     );
 
     if (!confirmar) {
@@ -15,7 +15,7 @@ export default function BotaoExcluirVeiculo({ id }) {
     }
 
     const resposta = await fetch(
-      `http://localhost:8080/veiculos/${id}`,
+      `http://localhost:8080/itenslocacao/${id}`,
       {
         method: "DELETE",
       }
@@ -25,13 +25,13 @@ export default function BotaoExcluirVeiculo({ id }) {
       router.refresh();
     } else {
       const erro = await resposta.text();
-      alert(erro || "Não foi possível excluir o veículo.");
+      alert(erro || "Não foi possível excluir o item de locação.");
     }
   }
 
   return (
     <button
-      onClick={excluirVeiculo}
+      onClick={excluirItem}
       className="bg-red-600 text-white px-2 py-1 rounded"
     >
       Excluir

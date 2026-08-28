@@ -27,6 +27,16 @@ export default function Home() {
       descricao: "Gerenciar contratos e locações de veículos ativas.",
       href: "/locacoes",
     },
+    {
+      titulo: "Clientes",
+      descricao: "Gerenciar os clientes cadastrados na locadora.",
+      href: "/clientes",
+    },
+    {
+      titulo: "Itens de Locação",
+      descricao: "Gerenciar os itens de veículos vinculados a cada locação.",
+      href: "/itensLocacao",
+    },
   ];
 
   return (
