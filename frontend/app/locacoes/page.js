@@ -26,16 +26,28 @@ export default function LocacoesPage() {
 
     async function finalizarLocacao(id) {
         try {
+            // Pega a data de hoje no formato YYYY-MM-DD exigido pelo Java
+            const dataHoje = new Date().toISOString().split('T')[0];
+
             const response = await fetch(`http://localhost:8080/api/v1/locacoes/${id}/finalizar`, {
-                method: "PUT",
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    dataDevolucao: dataHoje
+                })
             });
+
             if (response.ok) {
                 carregarLocacoes(); // Recarrega a tabela após finalizar
             } else {
-                alert("Erro ao finalizar a locação.");
+                const erro = await response.text();
+                alert("Erro ao finalizar a locação: " + erro);
             }
         } catch (error) {
             console.error("Erro ao finalizar locação:", error);
+            alert("Falha ao comunicar com o servidor.");
         }
     }
 
