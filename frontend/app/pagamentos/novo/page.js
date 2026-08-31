@@ -16,7 +16,7 @@ export default function NovoPagamentoPage() {
     useEffect(() => {
         async function buscarLocacoes() {
             try {
-                const res = await fetch("http://localhost:8080/locacoes");
+                const res = await fetch("http://localhost:8080/api/v1/locacoes");
                 if (res.ok) {
                     const dados = await res.json();
                     setLocacoes(dados);
@@ -32,7 +32,7 @@ export default function NovoPagamentoPage() {
         e.preventDefault();
         try {
             const pagamento = {
-                locacao: { id: parseInt(idLocacao) },
+                idLocacao: parseInt(idLocacao),
                 valor: parseFloat(valor),
                 dataPagamento,
                 formaPagamento,
