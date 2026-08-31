@@ -19,7 +19,6 @@ export default function NovaLocacaoPage() {
     useEffect(() => {
         async function carregarDependencias() {
             try {
-                // Rotas ajustadas exatamente conforme o código do backend de cada colega
                 const [resClientes, resFuncionarios, resVeiculos] = await Promise.all([
                     fetch("http://localhost:8080/clientes/"),
                     fetch("http://localhost:8080/funcionarios"),
