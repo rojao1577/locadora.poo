@@ -56,25 +56,60 @@ export default function NovoPagamentoPage() {
 
     return (
         <main className="p-6 max-w-lg mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Registrar Pagamento</h1>
+            <h1 className="text-2xl font-bold mb-4 text-white">Registrar Pagamento</h1>
             {mensagem && <p className="text-red-500 mb-4">{mensagem}</p>}
+
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                <select className="border p-2 rounded" value={idLocacao} onChange={(e) => setIdLocacao(e.target.value)} required>
-                    <option value="">Selecione a Locação...</option>
+                {/* Select de locações corrigido */}
+                <select
+                    className="border border-gray-700 bg-gray-900 text-white p-2 rounded"
+                    value={idLocacao}
+                    onChange={(e) => setIdLocacao(e.target.value)}
+                    required
+                >
+                    <option value="" disabled className="bg-gray-900 text-gray-400">
+                        Selecione a Locação...
+                    </option>
                     {locacoes.map((l) => (
-                        <option key={l.id} value={l.id}>
+                        <option key={l.id} value={l.id} className="bg-gray-900 text-white">
                             Locação #{l.id}
                         </option>
                     ))}
                 </select>
-                <input className="border p-2 rounded" type="number" step="0.01" placeholder="Valor" value={valor} onChange={(e) => setValor(e.target.value)} required />
-                <input className="border p-2 rounded" type="date" value={dataPagamento} onChange={(e) => setDataPagamento(e.target.value)} required />
-                <select className="border p-2 rounded" value={formaPagamento} onChange={(e) => setFormaPagamento(e.target.value)} required>
-                    <option value="PIX">PIX</option>
-                    <option value="CARTAO">Cartão</option>
-                    <option value="DINHEIRO">Dinheiro</option>
+
+                <input
+                    className="border border-gray-700 bg-gray-900 text-white p-2 rounded placeholder-gray-400"
+                    type="number"
+                    step="0.01"
+                    placeholder="Valor"
+                    value={valor}
+                    onChange={(e) => setValor(e.target.value)}
+                    required
+                />
+
+                <input
+                    className="border border-gray-700 bg-gray-900 text-white p-2 rounded"
+                    type="date"
+                    value={dataPagamento}
+                    onChange={(e) => setDataPagamento(e.target.value)}
+                    required
+                />
+
+                {/* Select de forma de pagamento corrigido */}
+                <select
+                    className="border border-gray-700 bg-gray-900 text-white p-2 rounded"
+                    value={formaPagamento}
+                    onChange={(e) => setFormaPagamento(e.target.value)}
+                    required
+                >
+                    <option value="PIX" className="bg-gray-900 text-white">PIX</option>
+                    <option value="CARTAO" className="bg-gray-900 text-white">Cartão</option>
+                    <option value="DINHEIRO" className="bg-gray-900 text-white">Dinheiro</option>
                 </select>
-                <button type="submit" className="bg-black text-white p-2 rounded">Confirmar</button>
+
+                <button type="submit" className="bg-white text-black font-medium p-2 rounded hover:bg-gray-200 transition">
+                    Confirmar
+                </button>
             </form>
         </main>
     );
