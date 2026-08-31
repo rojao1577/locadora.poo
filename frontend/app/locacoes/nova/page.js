@@ -64,17 +64,11 @@ export default function NovaLocacaoPage() {
     }
 
     return (
-        <main className="p-6 max-w-lg mx-auto text-white">
+        <main className="p-6 max-w-lg mx-auto">
             <h1 className="text-2xl font-bold mb-4">Registrar Locação</h1>
-
-            {mensagem && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                    {mensagem}
-                </div>
-            )}
-
+            {mensagem && <p className="text-red-500 mb-4">{mensagem}</p>}
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                <select className="border border-gray-400 bg-white text-black p-2 rounded" value={clienteId} onChange={(e) => setClienteId(e.target.value)} required>
+                <select className="border p-2 rounded" value={clienteId} onChange={(e) => setClienteId(e.target.value)} required>
                     <option value="">Selecione o Cliente...</option>
                     {clientes.map((c) => (
                         <option key={c.id} value={c.id}>
@@ -83,7 +77,7 @@ export default function NovaLocacaoPage() {
                     ))}
                 </select>
 
-                <select className="border border-gray-400 bg-white text-black p-2 rounded" value={funcionarioId} onChange={(e) => setFuncionarioId(e.target.value)} required>
+                <select className="border p-2 rounded" value={funcionarioId} onChange={(e) => setFuncionarioId(e.target.value)} required>
                     <option value="">Selecione o Funcionário...</option>
                     {funcionarios.map((f) => (
                         <option key={f.id} value={f.id}>
@@ -92,7 +86,7 @@ export default function NovaLocacaoPage() {
                     ))}
                 </select>
 
-                <select className="border border-gray-400 bg-white text-black p-2 rounded" value={veiculoId} onChange={(e) => setVeiculoId(e.target.value)} required>
+                <select className="border p-2 rounded" value={veiculoId} onChange={(e) => setVeiculoId(e.target.value)} required>
                     <option value="">Selecione o Veículo...</option>
                     {veiculos.map((v) => (
                         <option key={v.id} value={v.id}>
@@ -102,14 +96,14 @@ export default function NovaLocacaoPage() {
                 </select>
 
                 <input
-                    className="border border-gray-400 bg-white text-black p-2 rounded"
+                    className="border p-2 rounded"
                     type="date"
                     value={dataDevolucaoPrevista}
                     onChange={(e) => setDataDevolucaoPrevista(e.target.value)}
                     required
                 />
 
-                <button type="submit" className="bg-gray-200 text-black p-2 rounded mt-2 hover:bg-white transition-colors font-bold">
+                <button type="submit" className="bg-black text-white p-2 rounded">
                     Confirmar Locação
                 </button>
             </form>
