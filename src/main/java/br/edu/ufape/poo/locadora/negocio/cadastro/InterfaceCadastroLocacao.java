@@ -8,8 +8,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface InterfaceCadastroLocacao {
+
     Locacao registrarLocacao(Locacao locacao) throws ClienteInadimplenteException, VeiculoIndisponivelException;
+
     Locacao finalizarLocacao(Long idLocacao, LocalDate dataDevolucao);
+
     Locacao buscarLocacao(Long id);
+
     List<Locacao> listarLocacoes();
+
+    void removerLocacao(Long id);
 }

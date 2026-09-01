@@ -33,7 +33,6 @@ public class CadastroLocacao implements InterfaceCadastroLocacao {
                 item.getVeiculo().setStatus(StatusVeiculo.ALUGADO);
                 item.setLocacao(locacao);
 
-                // Correção aplicada aqui:
                 item.setValorDiaria(item.getVeiculo().getCategoria().getValorDiariaBase());
             }
         }
@@ -73,5 +72,10 @@ public class CadastroLocacao implements InterfaceCadastroLocacao {
     @Override
     public List<Locacao> listarLocacoes() {
         return locacaoRepository.findAll();
+    }
+
+    @Override
+    public void removerLocacao(Long id) {
+        locacaoRepository.deleteById(id);
     }
 }
