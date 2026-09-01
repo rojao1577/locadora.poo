@@ -14,7 +14,10 @@ public class LocacaoConversor {
 
     public Locacao toEntity(LocacaoDTORequest request) {
         Locacao locacao = new Locacao();
+
+        locacao.setDataLocacao(request.getDataLocacao());
         locacao.setDataDevolucaoPrevista(request.getDataDevolucaoPrevista());
+
         return locacao;
     }
 
