@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -25,6 +26,20 @@ public class CadastroLocacao implements InterfaceCadastroLocacao {
             throw new ClienteInadimplenteException(locacao.getCliente().getCpf());
         }
 
+        if (locacao.getDataLocacao() == null) {
+            locacao.setDataLocacao(LocalDate.now());
+        }
+
+        BigDecimal valorTotalCalculado = BigDecimal.ZERO;
+
+        long dias = 1;
+        if (locacao.getDataLocacao() != null && locacao.getDataDevolucaoPrevista() != null) {
+            dias = ChronoUnit.DAYS.between(locacao.getDataLocacao(), locacao.getDataDevolucaoPrevista());
+            if (dias <= 0) {
+                dias = 1;
+            }
+        }
+
         if (locacao.getItens() != null) {
             for (ItemLocacao item : locacao.getItens()) {
                 if (item.getVeiculo().getStatus() != StatusVeiculo.DISPONIVEL) {
@@ -33,12 +48,15 @@ public class CadastroLocacao implements InterfaceCadastroLocacao {
                 item.getVeiculo().setStatus(StatusVeiculo.ALUGADO);
                 item.setLocacao(locacao);
 
-                // Correção aplicada aqui:
-                item.setValorDiaria(item.getVeiculo().getCategoria().getValorDiariaBase());
+                BigDecimal diaria = item.getVeiculo().getCategoria().getValorDiariaBase();
+                item.setValorDiaria(diaria);
+                item.setDias((int) dias);
+                BigDecimal totalItem = diaria.multiply(new BigDecimal(dias));
+                valorTotalCalculado = valorTotalCalculado.add(totalItem);
             }
         }
 
-        locacao.setDataLocacao(LocalDate.now());
+        locacao.setValorTotal(valorTotalCalculado);
 
         return locacaoRepository.save(locacao);
     }
@@ -46,20 +64,39 @@ public class CadastroLocacao implements InterfaceCadastroLocacao {
     @Override
     public Locacao finalizarLocacao(Long idLocacao, LocalDate dataDevolucao) {
         Locacao locacao = buscarLocacao(idLocacao);
-
         locacao.setDataDevolucaoReal(dataDevolucao);
 
-        BigDecimal multa = locacao.calcularMulta();
-        if (locacao.getValorTotal() == null) {
-            locacao.setValorTotal(new BigDecimal("0.0"));
+        BigDecimal novoValorTotal = BigDecimal.ZERO;
+
+
+        long diasReais = 1;
+        if (locacao.getDataLocacao() != null && locacao.getDataDevolucaoReal() != null) {
+            diasReais = ChronoUnit.DAYS.between(locacao.getDataLocacao(), locacao.getDataDevolucaoReal());
+            if (diasReais <= 0) {
+                diasReais = 1;
+            }
         }
-        locacao.setValorTotal(locacao.getValorTotal().add(multa));
 
         if (locacao.getItens() != null) {
             for (ItemLocacao item : locacao.getItens()) {
                 item.getVeiculo().setStatus(StatusVeiculo.DISPONIVEL);
+
+                BigDecimal diaria = item.getValorDiaria();
+                if (diaria == null) {
+                    diaria = item.getVeiculo().getCategoria().getValorDiariaBase();
+                }
+
+                item.setDias((int) diasReais);
+
+
+                BigDecimal totalItem = diaria.multiply(new BigDecimal(diasReais));
+                novoValorTotal = novoValorTotal.add(totalItem);
             }
         }
+
+        BigDecimal multa = locacao.calcularMulta();
+
+        locacao.setValorTotal(novoValorTotal.add(multa));
 
         return locacaoRepository.save(locacao);
     }
@@ -73,5 +110,23 @@ public class CadastroLocacao implements InterfaceCadastroLocacao {
     @Override
     public List<Locacao> listarLocacoes() {
         return locacaoRepository.findAll();
+    }
+
+    @Override
+    public void removerLocacao(Long id) {
+
+        Locacao locacao = buscarLocacao(id);
+
+        if (locacao.getItens() != null) {
+            for (ItemLocacao item : locacao.getItens()) {
+                if (item.getVeiculo() != null) {
+                    item.getVeiculo().setStatus(StatusVeiculo.DISPONIVEL);
+                }
+            }
+
+            locacaoRepository.save(locacao);
+        }
+
+        locacaoRepository.deleteById(id);
     }
 }

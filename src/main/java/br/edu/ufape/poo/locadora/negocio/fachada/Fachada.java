@@ -8,7 +8,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import br.edu.ufape.poo.locadora.negocio.basica.Categoria;
 import br.edu.ufape.poo.locadora.negocio.basica.Cliente;
 import br.edu.ufape.poo.locadora.negocio.basica.Funcionario;
@@ -16,7 +15,6 @@ import br.edu.ufape.poo.locadora.negocio.basica.Pagamento;
 import br.edu.ufape.poo.locadora.negocio.basica.Veiculo;
 import br.edu.ufape.poo.locadora.negocio.basica.ItemLocacao;
 import br.edu.ufape.poo.locadora.negocio.basica.Locacao;
-
 
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCategoria;
 import br.edu.ufape.poo.locadora.negocio.cadastro.CadastroCliente;
@@ -34,7 +32,6 @@ import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroDuplicadoExc
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.RegistroInexistenteException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.VeiculoIndisponivelException;
 import br.edu.ufape.poo.locadora.negocio.cadastro.exception.VeiculoNaoEncontradoException;
-
 
 @Service
 public class Fachada {
@@ -81,7 +78,6 @@ public class Fachada {
         }
         cadastroCategoria.removerCategoria(id);
     }
-
 
     public Veiculo cadastrarVeiculo(Veiculo veiculo, Long idCategoria) {
 
@@ -145,7 +141,6 @@ public class Fachada {
         cadastroCliente.apagarCliente(entity);
     }
 
-
     public Funcionario cadastrarFuncionario(Funcionario funcionario) {
         return cadastroFuncionario.cadastrarFuncionario(funcionario);
     }
@@ -162,7 +157,6 @@ public class Fachada {
         cadastroFuncionario.removerFuncionario(id);
     }
 
-
     public Pagamento cadastrarPagamento(Pagamento pagamento) {
         return cadastroPagamento.cadastrarPagamento(pagamento);
     }
@@ -178,7 +172,6 @@ public class Fachada {
     public void removerPagamento(Long id) {
         cadastroPagamento.removerPagamento(id);
     }
-
 
     public ItemLocacao cadastrarItemLocacao(ItemLocacao itemLocacao) {
         return cadastroItemLocacao.cadastrarItemLocacao(itemLocacao);
@@ -231,5 +224,9 @@ public class Fachada {
 
     public Locacao finalizarLocacao(Long idLocacao, LocalDate dataDevolucao) {
         return cadastroLocacao.finalizarLocacao(idLocacao, dataDevolucao);
+    }
+
+    public void removerLocacao(Long id) {
+        cadastroLocacao.removerLocacao(id);
     }
 }

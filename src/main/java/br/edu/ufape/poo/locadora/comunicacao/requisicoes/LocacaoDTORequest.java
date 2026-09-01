@@ -8,6 +8,9 @@ import java.util.List;
 
 public class LocacaoDTORequest {
 
+    @NotNull(message = "A data de locação (retirada) é obrigatória")
+    private LocalDate dataLocacao;
+
     @NotNull(message = "A data de devolução prevista é obrigatória")
     @FutureOrPresent(message = "A data de devolução prevista não pode estar no passado")
     private LocalDate dataDevolucaoPrevista;
@@ -20,6 +23,9 @@ public class LocacaoDTORequest {
 
     @NotEmpty(message = "A locação deve conter ao menos o ID de um veículo")
     private List<Long> veiculosIds;
+
+    public LocalDate getDataLocacao() { return dataLocacao; }
+    public void setDataLocacao(LocalDate dataLocacao) { this.dataLocacao = dataLocacao; }
 
     public LocalDate getDataDevolucaoPrevista() { return dataDevolucaoPrevista; }
     public void setDataDevolucaoPrevista(LocalDate dataDevolucaoPrevista) { this.dataDevolucaoPrevista = dataDevolucaoPrevista; }
